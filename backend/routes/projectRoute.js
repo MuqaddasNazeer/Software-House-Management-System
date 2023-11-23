@@ -12,6 +12,10 @@ router.get('/projectsDetails/:project_Id', projectController.getProjectDetails);
 router.get('/projects', projectController.getProjects);
 router.get('/projectsData', projectController.getAllProjects);
 
-router.post('/assignProject/:projectId/:employeeId', projectController.assignProject);
+router.post('/assignProject/:project_Id/:employee_Id', projectController.assignProject);
+
+router.post('/assignRepository/:project_Id', projectController.assignRepository);
+
+router.put('/completeProject/:project_Id', projectController.completeProject);
 
 module.exports = router;

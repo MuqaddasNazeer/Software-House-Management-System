@@ -98,8 +98,8 @@ async function getProjects(req, res) {
 }
 async function assignProject(req, res) {
     try {
-        const projectId = req.params.projectId;
-        const employeeId = req.params.employeeId;
+        const projectId = req.params.project_Id;
+        const employeeId = req.params.employee_Id;
 
         // Check if the project with the given ID exists
         const existingProject = await projectModel.findById(projectId);
@@ -125,6 +125,61 @@ async function assignProject(req, res) {
         return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 }
+
+async function assignRepository(req, res) {
+    try {
+        const { project_Id } = req.params;
+        const { repoLink } = req.body;
+
+        console.log('Project ID:', project_Id);
+        console.log('Repository Link:', repoLink);
+        // Find the project by projectId
+        const project = await projectModel.findById(project_Id);
+
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+
+        // Update the project with the repository link
+        project.repositoryLink = repoLink;
+
+        // Save the updated project
+        await project.save();
+
+        console.log('Repository link assigned successfully');
+
+        return res.json({ success: true, message: 'Repository Link assigned successfully' });
+    } catch (error) {
+        console.error('Error handling repository link:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+
+}
+
+async function completeProject(req, res) {
+    try {
+        const { project_Id } = req.params;
+
+        // Find the project by projectId
+        const project = await projectModel.findById(project_Id);
+
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+
+        // Update the project status to 'completed'
+        project.status = 'completed';
+
+        // Save the updated project
+        await project.save();
+        return res.json({ success: true, message: 'Project Completed successfully' });
+    }
+    catch (error) {
+        console.error('Error handling repository link:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+
+}
 module.exports = {
     uploadProject,
     getAllProjectsByClient,
@@ -132,7 +187,11 @@ module.exports = {
 
     getProjects,
     getAllProjects,
-    assignProject
+    assignProject,
+
+    assignRepository,
+
+    completeProject
 }
 // title: {
 //     type: String,
