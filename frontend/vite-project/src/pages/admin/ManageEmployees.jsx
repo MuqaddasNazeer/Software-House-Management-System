@@ -141,11 +141,11 @@ const ManageEmployees = () => {
                                             <td className="px-6 py-4">{employee.email}</td>
                                             <td className="px-6 py-4">{employee.location}</td>
                                             <td className="px-6 py-4">
-                                                <button onClick={() => handleDeleteEmployeeClick(employee._id)} className="mr-2 font-medium text-blue-600 hover:underline">
-                                                    Delete
-                                                </button>
-                                                <button onClick={() => handleViewEmployeeClick(employee._id)} className="font-medium text-blue-600 hover:underline">
+                                                <button onClick={() => handleViewEmployeeClick(employee._id)} className="mr-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                                                     View Details
+                                                </button>
+                                                <button onClick={() => handleDeleteEmployeeClick(employee._id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
+                                                    Delete
                                                 </button>
                                             </td>
 

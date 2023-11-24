@@ -4,6 +4,7 @@ import axios from 'axios';
 import { UsersIcon, CheckCircleIcon } from '@heroicons/react/solid';
 import ViewProjectDetails from '../client/ViewProjectDetails';
 import WorkOnProjectModal from './WorkOnProjectModal';
+import ContactForm from '../../components/ContactForm';
 
 const EmployeeProject = () => {
     const [projects, setProjects] = useState([]);
@@ -15,21 +16,26 @@ const EmployeeProject = () => {
 
     // Modals related statess
     const [showWorkModal, setShowWorkModal] = useState(false);
+    const [showContactModal, setShowContactModal] = useState(false);
+    const [contact, setContact] = useState('');
     // Work on project modal
     const handleWorkOnProject = (projectId) => {
         const project = projects.find((p) => p._id === projectId);
+        console.log('Project : ',projects.find((p) => p._id === projectId))
         setSelectedProject(project);
+        console.log('Selected Project : ',selectedProject)
         setShowWorkModal(true);
     };
     const handleCloseWorkOnProjectModal = () => {
         setShowWorkModal(false);
     };
     // Contact client modal
-    const handleContactClient = (clientId) => {
-
+    const handleContactClick = (email) => {
+        setContact(email);
+        setShowContactModal(true);
     }
-    const handleCloseContactClientModal = () => {
-
+    const handleCloseContactModal = () => {
+        setShowContactModal(false);
     }
 
     useEffect(() => {
@@ -86,12 +92,6 @@ const EmployeeProject = () => {
     // Function to get cards number
     const assignedProjectsCount = projectsData.filter((project) => project.status === 'In-progress').length;
     const completedProjectsCount = projectsData.filter((project) => project.status === 'completed').length;
-
-    
-
-
-
-    
 
 
     return (
@@ -183,7 +183,7 @@ const EmployeeProject = () => {
                                                     Work on Project
                                                 </button>
                                                 <button
-                                                    onClick={() => handleContactClient(project.postedBy._id)}
+                                                    onClick={() => handleContactClick(project.postedBy.email)}
                                                     className="mr-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
                                                 >
                                                     Contact Client
@@ -241,11 +241,11 @@ const EmployeeProject = () => {
                         </table>
                     </div>)}
 
-
                 </>
             )}
 
             {/* Modals */}
+            {/* Work on Project Modal */}
             {showWorkModal && (
                 <div className="fixed inset-0 z-10 overflow-y-auto">
                     <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -258,6 +258,33 @@ const EmployeeProject = () => {
                             role="dialog" aria-modal="true" aria-labelledby="modal-headline"
                         >
                             <WorkOnProjectModal project={selectedProject} onClose={() => handleCloseWorkOnProjectModal()} />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Contact Client Modal */}
+            {showContactModal && (
+                <div className="fixed inset-0 z-10 overflow-y-auto">
+                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div className="fixed inset-0 transition-opacity">
+                            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+
+                        {/* Modal content */}
+                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+                        <div
+                            className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                            role="dialog" aria-modal="true" aria-labelledby="modal-headline"
+                        >
+                            {/* Content of the Contact Team Modal */}
+                            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+                            <div
+                                className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                                role="dialog" aria-modal="true" aria-labelledby="modal-headline"
+                            >
+                                <ContactForm onClose={handleCloseContactModal} contactEmail={contact} />
+                            </div>
                         </div>
                     </div>
                 </div>

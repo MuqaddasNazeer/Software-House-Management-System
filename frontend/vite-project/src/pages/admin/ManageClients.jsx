@@ -108,7 +108,7 @@ const ManageClients = () => {
                                         <td className="px-6 py-4">{client.email}</td>
                                         <td className="px-6 py-4">{client.location}</td>
                                         <td className="px-6 py-4 text-right">
-                                            <button onClick={() => handleViewDetailsClick(client._id)} className="font-medium text-blue-600 hover:underline">
+                                            <button onClick={() => handleViewDetailsClick(client._id)} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                                                 View Details
                                             </button>
                                         </td>

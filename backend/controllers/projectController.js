@@ -59,7 +59,9 @@ async function getProjectDetails(req, res) {
 
 async function getAllProjects(req, res) {
     try {
-        const projects = await projectModel.find();
+        const projects = await projectModel.find()
+        .populate('postedBy', 'username email') 
+        .populate('assignedTo', 'username email');
         return res.json({ projects });
     } catch (error) {
         console.error('Error getting projects:', error);
@@ -87,8 +89,8 @@ async function getProjects(req, res) {
 
         // Fetch projects based on the query
         const projects = await projectModel.find(query)
-            .populate('postedBy', 'username') // Populate the 'postedBy' field with the 'username' property
-            .populate('assignedTo', 'username'); // Populate the 'assignedTo' field with the 'username' property
+            .populate('postedBy', 'username email') // Populate the 'postedBy' field with the 'username' property
+            .populate('assignedTo', 'username email'); // Populate the 'assignedTo' field with the 'username' property
         console.log(projects)
         return res.json({ count: projects.length, projects: projects });
     } catch (error) {
@@ -118,7 +120,7 @@ async function assignProject(req, res) {
         existingProject.status = 'In-progress';
         await existingProject.save();
 
-        return res.json({ success: true, message: 'Project assigned successfully' });
+        return res.json({ success: true, message: 'Project assigned successfully', project: existingProject });
     }
     catch (error) {
         console.error('Error assigning project:', error);
@@ -193,32 +195,6 @@ module.exports = {
 
     completeProject
 }
-// title: {
-//     type: String,
-//     unique: true,
-//     required: true,
-//   },
-//
-//   postedBy: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'User', // Assuming you have a User model
-//     required: true,
-//   },
-//   deadlineDate: {
-//     type: Date,
-//     required: true,
-//   },
-//   assignedTo: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'User', // Assuming you have a User model for employees
-//   },
-//   document: {
-//     type: String, // This could be a link to a document stored on Cloudinary or a file path
-//     required: true,
-//   },
-//   repositoryLink: {
-//     type: String,
-//   },
 
 
 
